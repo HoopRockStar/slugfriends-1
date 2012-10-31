@@ -1,0 +1,230 @@
+timestamp: 2012-10-25T19:32:24.852394
+CREATE TABLE auth_user(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name CHAR(128),
+    last_name CHAR(128),
+    email CHAR(512),
+    password CHAR(512),
+    registration_key CHAR(512),
+    reset_password_key CHAR(512),
+    registration_id CHAR(512)
+);
+success!
+timestamp: 2012-10-25T19:32:24.873707
+CREATE TABLE auth_group(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    role CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-25T19:32:24.913073
+CREATE TABLE auth_membership(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-10-25T19:32:24.941975
+CREATE TABLE auth_permission(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id INTEGER REFERENCES auth_group (id) ON DELETE CASCADE,
+    name CHAR(512),
+    table_name CHAR(512),
+    record_id INTEGER
+);
+success!
+timestamp: 2012-10-25T19:32:24.964087
+CREATE TABLE auth_event(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    time_stamp TIMESTAMP,
+    client_ip CHAR(512),
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    origin CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-25T19:32:25.018088
+CREATE TABLE auth_cas(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER REFERENCES auth_user (id) ON DELETE CASCADE,
+    created_on TIMESTAMP,
+    service CHAR(512),
+    ticket CHAR(512),
+    renew CHAR(1)
+);
+success!
+timestamp: 2012-10-25T19:44:56.457765
+CREATE TABLE Users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name CHAR(512),
+    username CHAR(512),
+    photo CHAR(512),
+    email CHAR(512),
+    password CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-25T19:47:05.540317
+CREATE TABLE Groups(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    photo CHAR(512),
+    name CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-25T19:47:05.589367
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(80),
+    date DATE,
+    time TIME,
+    location CHAR(100),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-25T20:13:20.623240
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-25T20:17:06.685539
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-25T20:17:09.904691
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-25T21:51:24.529945
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-25T22:01:22.384652
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-26T11:53:58.768004
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    description TEXT
+);
+timestamp: 2012-10-26T11:57:24.947909
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE
+);
+timestamp: 2012-10-26T12:01:19.687561
+CREATE TABLE Events(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title CHAR(512),
+    date DATE,
+    time TIME,
+    location CHAR(512),
+    description TEXT
+);
+success!
+timestamp: 2012-10-26T12:02:21.974708
+CREATE TABLE Group_Members(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE,
+    member INTEGER REFERENCES Users (id) ON DELETE CASCADE,
+    administrator CHAR(512),
+    rating INTEGER
+);
+timestamp: 2012-10-26T12:03:59.883023
+CREATE TABLE Group_Members(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    member INTEGER REFERENCES Users (id) ON DELETE CASCADE,
+    administrator CHAR(512),
+    rating INTEGER
+);
+success!
+timestamp: 2012-10-26T12:03:59.956101
+CREATE TABLE Attendees(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event INTEGER REFERENCES Events (id) ON DELETE CASCADE,
+    attendee INTEGER REFERENCES Group_Members (id) ON DELETE CASCADE,
+    administrator CHAR(1)
+);
+success!
+timestamp: 2012-10-26T12:03:59.975618
+CREATE TABLE Comments(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    event INTEGER REFERENCES Events (id) ON DELETE CASCADE,
+    member INTEGER REFERENCES Group_Members (id) ON DELETE CASCADE,
+    comment TEXT
+);
+success!
+timestamp: 2012-10-26T12:16:28.149316
+CREATE TABLE Keywords(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    keyword CHAR(512)
+);
+success!
+timestamp: 2012-10-26T12:16:28.489606
+CREATE TABLE User_Interests(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user INTEGER REFERENCES Users (id) ON DELETE CASCADE,
+    interest INTEGER REFERENCES Keywords (id) ON DELETE CASCADE
+);
+success!
+timestamp: 2012-10-26T12:16:28.508488
+CREATE TABLE Search(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE
+);
+timestamp: 2012-10-26T12:21:23.639748
+ALTER TABLE Events ADD group_id INTEGER REFERENCES Groups (id) ON DELETE CASCADE;
+timestamp: 2012-10-26T12:21:23.744348
+ALTER TABLE Group_Members ADD group_id INTEGER REFERENCES Groups (id) ON DELETE CASCADE;
+timestamp: 2012-10-26T12:21:23.802195
+CREATE TABLE Search(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    keyword_id INTEGER REFERENCES Keywords (id) ON DELETE CASCADE,
+    group INTEGER REFERENCES Groups (id) ON DELETE CASCADE
+);
+timestamp: 2012-10-26T12:27:31.821248
+CREATE TABLE Search(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    keyword_id INTEGER REFERENCES Keywords (id) ON DELETE CASCADE,
+    group_id INTEGER REFERENCES Groups (id) ON DELETE CASCADE
+);
+success!

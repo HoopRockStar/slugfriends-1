@@ -8,14 +8,45 @@
 ## - download is for downloading files uploaded in the db (does streaming)
 ## - call exposes all registered services (none by default)
 #########################################################################
-
 def index():
-    """
-    example action using the internationalization operator T and flash
-    rendered by views/default/index.html or views/generic.html
-    """
-    response.flash = "Welcome to web2py!"
-    return dict(message=T('Hello World'))
+  return dict(form=auth())
+  
+def groups():
+    db(db.Groups.id==db.Groups(request.args[0]))
+    group = db.Groups(request.args[0]) or redirect(URL('index'))
+    ##is_administrator = db(auth_users.id==db.Group_Members.administrator)
+    ##return dict(group=group, is_administrator=is_administrator)
+    event = db(db.Events.group_id==group.id).select()
+    return dict(group=group, event=event)
+ 
+#@auth.requires_login() 
+def createAGroup():
+    form=SQLFORM(db.Groups)
+    if form.process().accepted:
+        response.flash="Your group has been added"
+        redirect(URL('listGroups'))
+    elif form.errors:
+        response.flash="Please correct any errors"
+    else:
+        response.flash="Please enter the information for your group"
+    return dict(form=form)
+    
+def listGroups():
+    groups = db().select(db.Groups.ALL)
+    return dict(groups=groups)
+
+@auth.requires_login()
+def delete():
+    note = db.notes(request.args[0]) or redirect(URL('index'))
+    form = SQLFORM.factory(Field('Confirm_deletion', 'boolean', default=False))
+    if form.process().accepted:
+        db(db.notes.id == request.args[0]).delete()
+        db.commit()
+        session.flash = T('The note has been deleted')
+        redirect(URL('index'))
+    return dict(form=form, note=note, user=auth.user)
+    
+
 
 def user():
     """
@@ -68,4 +99,3 @@ def data():
       LOAD('default','data.load',args='tables',ajax=True,user_signature=True)
     """
     return dict(form=crud())
-
